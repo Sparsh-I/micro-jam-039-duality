@@ -12,30 +12,29 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private GameObject[] enemyPrefabs;
 
     [Header("Enemy Spawn Settings")]
-    [Tooltip("Radius at which the enemies spawn from.")]
+    [Tooltip("Radius at which the enemies spawn from")]
     [SerializeField] private float spawnRadius;
     
-    [Tooltip("Speed at which the enemy moves at.")]
+    [Tooltip("Speed at which the enemy moves at")]
     [SerializeField] private float enemySpeed;
     
-    [Tooltip("How often the enemies spawn.")]
+    [Tooltip("How often the enemies spawn")]
     [SerializeField] private float spawnRate;
     
-    [Tooltip("Time in seconds for when the next enemy spawns in.")]
-    [SerializeField] private float nextEnemyTimer;
+    private float _nextEnemyTimer;
 
     [Header("Enemy Selector")]
-    [Tooltip("Lower bound (inclusive) for spawning smallest enemies.")]
+    [Tooltip("Lower bound (inclusive) for spawning smallest enemies")]
     [SerializeField] private int minRandomiserValue;
     
-    [Tooltip("Upper bound (exclusive) for spawning largest enemies.")]
-    [SerializeField] private int maxRandomiserValue;
-    
-    [Tooltip("Largest value (inclusive) for spawning smallest enemies.")]
+    [Tooltip("Largest value (inclusive) for spawning smallest enemies")]
     [SerializeField] private float enemySmallThreshold;
     
-    [Tooltip("Largest value (inclusive) for spawning medium enemies.")]
+    [Tooltip("Largest value (inclusive) for spawning medium enemies")]
     [SerializeField] private float enemyMediumThreshold;
+    
+    [Tooltip("Upper bound (exclusive) for spawning largest enemies")]
+    [SerializeField] private int maxRandomiserValue;
     
     // Start is called before the first frame update
     void Start()
@@ -46,10 +45,10 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time >= nextEnemyTimer)
+        if (Time.time >= _nextEnemyTimer)
         {
             SpawnEnemy();
-            nextEnemyTimer = Time.time + spawnRate;
+            _nextEnemyTimer = Time.time + spawnRate;
         }
     }
     
@@ -57,6 +56,7 @@ public class EnemyController : MonoBehaviour
     {
         int enemySelector = Random.Range(minRandomiserValue, maxRandomiserValue);
         if (enemySelector <= enemySmallThreshold) 
+            
             SpawnEnemy(enemyPrefabs[0]);
         else if (enemySelector <= enemyMediumThreshold)
             SpawnEnemy(enemyPrefabs[1]);

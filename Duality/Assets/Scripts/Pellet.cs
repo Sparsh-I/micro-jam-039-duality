@@ -17,7 +17,11 @@ public class Pellet : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(transform.position, _spawnPoint);
-        if (distance >= maxDistance)
-            Destroy(gameObject);
+        if (distance >= maxDistance) Destroy(gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy")) Destroy(gameObject);
     }
 }
