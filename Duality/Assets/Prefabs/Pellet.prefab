@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 12
+  damageMultiplier: 1
 --- !u!61 &7535832156555792112
 BoxCollider2D:
   m_ObjectHideFlags: 0

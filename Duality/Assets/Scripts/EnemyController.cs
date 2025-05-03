@@ -18,7 +18,7 @@ public class EnemyController : MonoBehaviour
     [Tooltip("Speed at which the enemy moves at")]
     [SerializeField] private float enemySpeed;
     
-    [Tooltip("How often the enemies spawn")]
+    [Tooltip("How many enemies spawn in one time unit")]
     [SerializeField] private float spawnRate;
     
     private float _nextEnemyTimer;
@@ -43,12 +43,12 @@ public class EnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void SpawnEnemyWave()
     {
         if (Time.time >= _nextEnemyTimer)
         {
             SpawnEnemy();
-            _nextEnemyTimer = Time.time + spawnRate;
+            _nextEnemyTimer = Time.time + 1 / spawnRate;
         }
     }
     
