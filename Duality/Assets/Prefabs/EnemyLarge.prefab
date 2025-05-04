@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5784158683419506844}
   - component: {fileID: 7321866548017738874}
   - component: {fileID: 3332199165614350612}
-  - component: {fileID: 4090573688028231828}
+  - component: {fileID: 1833211982829061820}
   - component: {fileID: 3549333097066913310}
   - component: {fileID: 5843416857658184096}
   m_Layer: 0
@@ -115,7 +115,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4090573688028231828
+--- !u!114 &1833211982829061820
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,10 +124,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1411565659061612997}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bd0767349dcf2e4dbdba3f5e7b6b9f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 46d552c307234a5d8abe20aa523e3e6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 15
+  health: 12
+  level: 1
+  manaSystem: {fileID: 0}
 --- !u!61 &3549333097066913310
 BoxCollider2D:
   m_ObjectHideFlags: 0

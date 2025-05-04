@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using Enemies;
 using UnityEngine;
 
 public class Pellet : MonoBehaviour
@@ -33,8 +31,7 @@ public class Pellet : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log(GetPelletDamage());
-            other.gameObject.GetComponent<Enemy>().TakeDamage(GetPelletDamage());
+            other.gameObject.GetComponent<EnemyBase>().TakeDamage(GetPelletDamage());
             Destroy(gameObject);
         }
     }
