@@ -54,6 +54,12 @@ namespace Managers
             return maxHealth;
         }
 
+        public void IncreaseMaxHealth()
+        {
+            health += 10;
+            maxHealth += 10;
+        }
+
         public void TakeDamage(int damage)
         {
             health -= damage;

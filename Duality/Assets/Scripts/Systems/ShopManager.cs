@@ -8,31 +8,26 @@ namespace Systems
     public class ShopManager : MonoBehaviour
     {
         [Header("Shop UI Elements")] [SerializeField]
-        private Button nextWaveButton;
+        private Button[] shopButtons;
 
-        [SerializeField] private Button attackCardButton;
-
-        [SerializeField] private Button defenceCardButton;
+        [SerializeField] private ManaSystem manaSystem;
 
         private void Start()
         {
-            nextWaveButton.gameObject.SetActive(false);
-            attackCardButton.gameObject.SetActive(false);
-            defenceCardButton.gameObject.SetActive(false);
+            foreach (Button button in shopButtons) button.gameObject.SetActive(false);
+            manaSystem.StartManaTimer();
         }
 
         public void OpenShop()
         {
-            nextWaveButton.gameObject.SetActive(true);
-            attackCardButton.gameObject.SetActive(true);
-            defenceCardButton.gameObject.SetActive(true);
+            foreach (Button button in shopButtons) button.gameObject.SetActive(true);
+            manaSystem.StopManaTimer();
         }
 
         public void CloseShop()
         {
-            nextWaveButton.gameObject.SetActive(false);
-            attackCardButton.gameObject.SetActive(false);
-            defenceCardButton.gameObject.SetActive(false);
+            foreach (Button button in shopButtons) button.gameObject.SetActive(false);
+            manaSystem.StartManaTimer();
         }
     }
 }

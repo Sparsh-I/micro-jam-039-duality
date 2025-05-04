@@ -10,7 +10,8 @@ namespace Managers
         [Header("List of Enemies")] [SerializeField]
         private GameObject[] enemyPrefabs;
 
-        [Header("Enemy Spawn Settings")] [Tooltip("Radius at which the enemies spawn from")] [SerializeField]
+        [Header("Enemy Spawn Settings")] 
+        [Tooltip("Radius at which the enemies spawn from")] [SerializeField]
         private float spawnRadius;
 
         [Tooltip("Speed at which the enemy moves at")] [SerializeField]
@@ -21,7 +22,8 @@ namespace Managers
 
         private float _nextEnemyTimer;
 
-        [Header("Enemy Selector")] [Tooltip("Lower bound (inclusive) for spawning smallest enemies")] [SerializeField]
+        [Header("Enemy Selector")] 
+        [Tooltip("Lower bound (inclusive) for spawning smallest enemies")] [SerializeField]
         private int minRandomiserValue;
 
         [Tooltip("Largest value (inclusive) for spawning smallest enemies")] [SerializeField]
@@ -40,12 +42,12 @@ namespace Managers
         }
 
         // Update is called once per frame
-        public void SpawnEnemyWave()
+        public void SpawnEnemyWave(int waveNumber)
         {
             if (Time.time >= _nextEnemyTimer)
             {
                 SpawnEnemy();
-                _nextEnemyTimer = Time.time + 1 / spawnRate;
+                _nextEnemyTimer = Time.time + 1 / (spawnRate * waveNumber);
             }
         }
 

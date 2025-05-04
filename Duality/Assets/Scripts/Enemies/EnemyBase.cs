@@ -1,5 +1,6 @@
 using System;
 using Managers;
+using Systems;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -18,12 +19,15 @@ namespace Enemies
         [Tooltip("Damage the enemy deals to the player")] [SerializeField]
         protected int attackStat;
 
+        private ManaSystem _manaSystem;
+
         private void Start()
         {
             SetAttackStat();
+            _manaSystem = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ManaSystem>();
         }
 
-        void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject.CompareTag("Player"))
             {
@@ -35,7 +39,11 @@ namespace Enemies
         public void TakeDamage(float damage)
         {
             health -= damage;
-            if (health <= 0) Destroy(gameObject);
+            if (health <= 0)
+            {
+                _manaSystem.AddManaFromEnemy(gameObject);
+                Destroy(gameObject);
+            }
         }
 
         public abstract float GetManaDrop();

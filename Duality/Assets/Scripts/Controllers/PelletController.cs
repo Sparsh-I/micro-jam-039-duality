@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace Managers
@@ -20,15 +21,26 @@ namespace Managers
 
         private float _nextPelletTimer;
 
+        [Header("Attack Stats UI")]
+        [SerializeField] private TextMeshProUGUI fireRateText;
+        [SerializeField] private TextMeshProUGUI pelletForceText;
+        [SerializeField] private TextMeshProUGUI rangeText;
+        
         // Start is called before the first frame update
         void Start()
         {
             _spawnPoint = Vector3.zero;
+            fireRateText.text = "FR: " + GetFireRate();
+            pelletForceText.text = "PF: " + GetPelletForce();
+            pelletForceText.text = "Range: " + GetRange();
         }
 
         // Update is called once per frame
         void Update()
         {
+            fireRateText.text = "FR: " + GetFireRate();
+            pelletForceText.text = "PF: " + GetPelletForce();
+            
             GameObject closestEnemy = FindClosestEnemy();
             if (closestEnemy)
             {
@@ -73,15 +85,50 @@ namespace Managers
 
             return closestEnemy;
         }
-
+        
         public float GetPelletForce()
         {
             return pelletForce;
         }
 
+        public void IncreasePelletForce(float force)
+        {
+            pelletForce += force;
+        }
+
+        public void DecreasePelletForce(float force)
+        {
+            pelletForce -= force;
+        }
+
         public float GetFireRate()
         {
             return fireRate;
+        }
+        
+        public void IncreaseFireRate(float rate)
+        {
+            fireRate += rate;
+        }
+
+        public void DecreaseFireRate(float rate)
+        {
+            fireRate -= rate;
+        }
+
+        public float GetRange()
+        {
+            return range;
+        }
+
+        public void IncreaseRange(float dist)
+        {
+            range += dist;
+        }
+        
+        public void DecreaseRange(float dist)
+        {
+            range -= dist;
         }
     }
 }

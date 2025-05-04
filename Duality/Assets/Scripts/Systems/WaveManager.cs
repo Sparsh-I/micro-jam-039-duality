@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using Managers;
+using UnityEngine.Serialization;
 
 namespace Systems
 {
@@ -10,14 +11,14 @@ namespace Systems
         [Header("Wave Settings")] [Tooltip("How long the wave goes on for")] [SerializeField]
         private float waveDuration;
 
+        [Tooltip("Which wave are is the current one?")] [SerializeField]
+        private int currentWave;
+        
         [Header("Internal Wave Settings")] [Tooltip("How much longer the wave goes on for")] [SerializeField]
         private float waveTimer;
 
         [Tooltip("Is the wave currently active")] [SerializeField]
         private bool isWaveActive;
-
-        [Tooltip("How many waves have occurred")] [SerializeField]
-        private int wavesCompleted;
 
         [Tooltip("Is the player ready for the next wave?")] [SerializeField]
         private bool isPlayerReadyForNextWave;
@@ -44,7 +45,7 @@ namespace Systems
             if (isWaveActive)
             {
                 waveTimer -= Time.deltaTime;
-                enemySpawner.SpawnEnemyWave();
+                enemySpawner.SpawnEnemyWave(currentWave);
 
                 if (waveTimer <= 0) EndWave();
             }
@@ -80,8 +81,8 @@ namespace Systems
         {
             shopManager.CloseShop();
             isPlayerReadyForNextWave = true;
-            wavesCompleted++;
-            waveText.text = "Wave " + wavesCompleted;
+            currentWave++;
+            waveText.text = "Wave " + currentWave;
         }
 
         private void DestroyAllRemainingEnemies()

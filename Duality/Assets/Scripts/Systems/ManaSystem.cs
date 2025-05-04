@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using Enemies;
 using UnityEngine;
 
@@ -16,23 +17,48 @@ namespace Systems
         [Header("Mana Regeneration")] [SerializeField]
         private float manaRegenRate;
 
-        [SerializeField] private EnemyBase enemyDrop;
+        [SerializeField] private bool isInShop;
 
         private void Start()
         {
             currentMana = 0;
             manaText.text = "Mana: " + currentMana + "/" + maxMana;
+            StartManaTimer();
         }
 
         private void Update()
         {
-            currentMana += manaRegenRate * Time.deltaTime;
-            manaText.text = "Mana: " + currentMana + "/" + maxMana; // Limit to 1 or 2 dp
+            if (!isInShop)
+            {
+                currentMana += manaRegenRate * Time.deltaTime;
+                if (currentMana >= maxMana) currentMana = maxMana;
+                manaText.text = "Mana: " + Math.Round(currentMana, 1) + "/" + maxMana;
+            }
+        }
+
+        public void StartManaTimer()
+        {
+            isInShop = false;
+        }
+
+        public void StopManaTimer()
+        {
+            isInShop = true;
         }
 
         public void AddManaFromEnemy(GameObject enemy)
         {
             currentMana += enemy.GetComponent<EnemyBase>().GetManaDrop();
+        }
+
+        public void PurchaseWithMana(float mana)
+        {
+            currentMana -= mana;
+        }
+
+        public double GetCurrentMana()
+        {
+            return Math.Round(currentMana, 1);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Managers;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Systems
 {
@@ -15,9 +17,18 @@ namespace Systems
 
         [Tooltip("Defence point limit")] [SerializeField]
         private int maxDefencePoints;
-
-        [Header("Reserve")] [Tooltip("Stored points when switching points around between rounds")] [SerializeField]
-        private int reservePoints;
+        
+        [Header("Stat Increments")] [Tooltip("How much the stats increase by with each card bought")] [SerializeField]
+        private float statIncrement;
+        
+        [Header("References")] [Tooltip("Reference to pellet controller to adjust attack stats")] [SerializeField]
+        private PelletController pelletController;
+        
+        [Tooltip("Reference to player controller to adjust defence stats")] [SerializeField]
+        private PlayerController playerController;
+        
+        [Tooltip("Reference to mana system to perform transactions")] [SerializeField]
+        private ManaSystem manaSystem;
 
         public int GetAttackPoints()
         {
@@ -31,12 +42,25 @@ namespace Systems
 
         public void AddAttackPoint()
         {
-            if (attackPoints < maxAttackPoints) attackPoints++;
+            double diff = manaSystem.GetCurrentMana();
+            if (attackPoints < maxAttackPoints)
+            {
+                attackPoints++;
+                pelletController.IncreaseFireRate(statIncrement);
+            }
         }
 
         public void SubtractAttackPoint()
         {
-            if (attackPoints > 0) attackPoints--;
+            if (attackPoints > 0 && defencePoints < maxDefencePoints)
+            {
+                attackPoints--;
+                AddDefencePoint();
+            }
+            else
+            {
+                Debug.Log("AP=0 / DP=max");
+            }
         }
 
 
@@ -53,35 +77,24 @@ namespace Systems
 
         public void AddDefencePoint()
         {
-            if (defencePoints < maxDefencePoints) defencePoints++;
+            if (defencePoints < maxDefencePoints)
+            {
+                defencePoints++;
+                playerController.IncreaseMaxHealth();
+            }
         }
 
         public void SubtractDefencePoint()
         {
-            if (defencePoints > 0) defencePoints--;
-        }
-
-
-
-        public int GetReservePoints()
-        {
-            return reservePoints;
-        }
-
-        public void AddReservePoint()
-        {
-            reservePoints++;
-        }
-
-        public bool SubtractReservePoint()
-        {
-            if (reservePoints > 0)
+            if (defencePoints > 0 && attackPoints < maxAttackPoints)
             {
-                reservePoints--;
-                return true;
+                defencePoints--;
+                AddAttackPoint();
             }
-
-            return false;
+            else
+            {
+                Debug.Log("DP=0 / AP=max");
+            }
         }
     }
 }
