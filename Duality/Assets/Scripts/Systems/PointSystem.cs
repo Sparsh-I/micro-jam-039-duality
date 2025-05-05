@@ -38,7 +38,7 @@ namespace Systems
             return maxAttackPoints;
         }
 
-        public void AddAttackPoint(AttackUpgradeType type, float increment, GameObject card)
+        public void AddAttackPoint(AttackUpgradeType type, double increment, GameObject card)
         {
             string costText = card.GetComponentsInChildren<TextMeshProUGUI>()[1].text.Split(" ")[0];
             double cost = double.Parse(costText);
@@ -49,10 +49,10 @@ namespace Systems
                 switch (type)
                 {
                     case AttackUpgradeType.FireRate:
-                        pelletController.IncreaseFireRate(increment);
+                        pelletController.IncreaseFireRate((float) increment);
                         break;
                     case AttackUpgradeType.PelletForce:
-                        pelletController.IncreasePelletForce(increment);
+                        pelletController.IncreasePelletForce((float) increment);
                         break;
                 }
                 manaSystem.PurchaseWithMana(cost);
@@ -85,7 +85,7 @@ namespace Systems
             return maxDefencePoints;
         }
 
-        public void AddDefencePoint(DefenceUpgradeType type, float increment, GameObject card)
+        public void AddDefencePoint(DefenceUpgradeType type, double increment, GameObject card)
         {
             string costText = card.GetComponentsInChildren<TextMeshProUGUI>()[1].text.Split(" ")[0];
             double cost = double.Parse(costText);
@@ -99,7 +99,7 @@ namespace Systems
                         playerController.IncreaseMaxHealth((int) increment);
                         break;
                     case DefenceUpgradeType.RangeSize:
-                        pelletController.IncreaseRange(increment);
+                        pelletController.IncreaseRange((float) increment);
                         break;
                 }
                 manaSystem.PurchaseWithMana(cost);

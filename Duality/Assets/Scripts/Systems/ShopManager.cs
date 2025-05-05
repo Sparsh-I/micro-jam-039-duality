@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using Managers;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 namespace Systems
@@ -35,8 +37,8 @@ namespace Systems
         private DefenceUpgradeType _defenceUpgrade;
         
         [Header("Stat Increments")]
-        private float _attackStatIncrement;
-        private float _defenceStatIncrement;
+        private double _attackStatIncrement;
+        private double _defenceStatIncrement;
         
         [Tooltip("Minimum (inclusive) stat increase for bought cards")] [SerializeField]
         private float statIncrementMin;
@@ -99,12 +101,14 @@ namespace Systems
         private void RandomiseUpgrades()
         {
             TextMeshProUGUI[] attackCardInfo = attackCard.GetComponentsInChildren<TextMeshProUGUI>();
-            attackCardInfo[0].text = RandomiseAttackUpgrade()[0];
-            attackCardInfo[1].text = RandomiseAttackUpgrade()[1];
+            string[] attackTexts = RandomiseAttackUpgrade();
+            attackCardInfo[0].text = attackTexts[0];
+            attackCardInfo[1].text = attackTexts[1];
             
             TextMeshProUGUI[] defenceCardInfo = defenceCard.GetComponentsInChildren<TextMeshProUGUI>();
-            defenceCardInfo[0].text = RandomiseDefenceUpgrade()[0];
-            defenceCardInfo[1].text = RandomiseDefenceUpgrade()[1];
+            string[] defenceTexts = RandomiseDefenceUpgrade();
+            defenceCardInfo[0].text = defenceTexts[0];
+            defenceCardInfo[1].text = defenceTexts[1];
         }
 
         private string[] RandomiseAttackUpgrade()
@@ -112,12 +116,12 @@ namespace Systems
             string[] texts = new string[2];
             
             _attackUpgrade = (AttackUpgradeType) Random.Range(0, 2);
-            _attackStatIncrement = Random.Range(statIncrementMin, statIncrementMax);
+            _attackStatIncrement = Math.Round(Random.Range(statIncrementMin, statIncrementMax), 1);
             
             texts[0] = _attackUpgrade == AttackUpgradeType.FireRate 
-                ? "Increase fire rate by " + Math.Round(_attackStatIncrement, 1)
-                : "Increase pellet force by " + Math.Round(_attackStatIncrement, 1);
-            float cost = _attackStatIncrement * statPriceMultiplier;
+                ? "Increase fire rate by " + _attackStatIncrement
+                : "Increase pellet force by " + _attackStatIncrement;
+            double cost = _attackStatIncrement * statPriceMultiplier;
             texts[1] = Math.Round(cost, 1) + " mana";
 
             return texts;
@@ -129,16 +133,18 @@ namespace Systems
             
             _defenceUpgrade = (DefenceUpgradeType) Random.Range(0, 2);
             _defenceStatIncrement = _defenceUpgrade == DefenceUpgradeType.MaxHealth
-                ? Random.Range(healthIncrementMin, healthIncrementMax)
-                : Random.Range(statIncrementMin, statIncrementMax);
+                ? Math.Round(Random.Range(healthIncrementMin, healthIncrementMax), 0)
+                : Math.Round(Random.Range(statIncrementMin, statIncrementMax), 1);
             
             texts[0] = _defenceUpgrade == DefenceUpgradeType.MaxHealth 
-                ? "Increase max health by " + Math.Round(_defenceStatIncrement, 0) 
-                : "Increase range size by " + Math.Round(_defenceStatIncrement, 1);
+                ? "Increase max health by " + _defenceStatIncrement 
+                : "Increase range size by " + _defenceStatIncrement;
             
             float multiplier = _defenceUpgrade == DefenceUpgradeType.MaxHealth ? healthStatPriceMultiplier : statPriceMultiplier;
-            
-            float cost = _defenceStatIncrement * multiplier;
+            Debug.Log("Text: " + texts[0]);
+            Debug.Log("Multiplier: " + multiplier);
+            Debug.Log("StatIncrement: " + _defenceStatIncrement);
+            double cost = _defenceStatIncrement * multiplier;
             texts[1] = Math.Round(cost, 1) + " mana";
 
             return texts;
