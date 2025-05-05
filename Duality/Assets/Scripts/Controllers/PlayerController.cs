@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Systems;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Managers
 {
@@ -14,10 +11,10 @@ namespace Managers
         [Header("Health")] [Tooltip("Current player health")] [SerializeField]
         private float health;
 
+        [SerializeField] private Slider slider;
+
         [Tooltip("Max player health")] [SerializeField]
         private float maxHealth;
-
-        [SerializeField] private TextMeshProUGUI healthText;
 
         [Header("Points")] [SerializeField] private PointSystem pointSystem;
 
@@ -27,17 +24,19 @@ namespace Managers
 
         void Start()
         {
+            slider.maxValue = maxHealth;
             health = maxHealth;
-            healthText.text = "Health: " + GetHealth();
-            attackPointsText.text = "AP: 0";;
-            defencePointsText.text = "DP: 0";
+            attackPointsText.text = "0";;
+            defencePointsText.text = "0";
         }
 
         void Update()
         {
-            healthText.text = "Health: " + GetHealth();
-            attackPointsText.text = "AP: " + pointSystem.GetAttackPoints();
-            defencePointsText.text = "DP: " + pointSystem.GetDefencePoints();
+            slider.value = GetHealth();
+            slider.maxValue = GetMaxHealth();
+            
+            attackPointsText.text = pointSystem.GetAttackPoints().ToString();
+            defencePointsText.text = pointSystem.GetDefencePoints().ToString();
         }
 
         private void RestoreHealth()
