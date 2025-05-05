@@ -21,6 +21,7 @@ namespace Managers
         private float spawnRate;
 
         private float _nextEnemyTimer;
+        private float _spawnMultiplier;
 
         [Header("Enemy Selector")] 
         [Tooltip("Lower bound (inclusive) for spawning smallest enemies")] [SerializeField]
@@ -40,14 +41,14 @@ namespace Managers
         {
             _endPoint = Vector3.zero;
         }
-
-        // Update is called once per frame
+        
         public void SpawnEnemyWave(int waveNumber)
         {
+            _spawnMultiplier = (float) waveNumber / 2;
             if (Time.time >= _nextEnemyTimer)
             {
                 SpawnEnemy();
-                _nextEnemyTimer = Time.time + 1 / (spawnRate * waveNumber);
+                _nextEnemyTimer = Time.time + 1 / (spawnRate * _spawnMultiplier);
             }
         }
 

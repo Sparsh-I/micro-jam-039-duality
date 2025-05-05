@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Pellet
   - GameManager
+  - ShopUI
   layers:
   - Default
   - TransparentFX
@@ -44,6 +45,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Enemies
+    uniqueID: 868147191
+    locked: 0
   - name: Player
     uniqueID: 4165462575
+    locked: 0
+  - name: Shop
+    uniqueID: 846436201
     locked: 0

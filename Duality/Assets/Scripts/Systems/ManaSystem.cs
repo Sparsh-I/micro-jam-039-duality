@@ -22,7 +22,7 @@ namespace Systems
         private void Start()
         {
             currentMana = 0;
-            manaText.text = "Mana: " + currentMana + "/" + maxMana;
+            manaText.text = "Mana: " + currentMana;
             StartManaTimer();
         }
 
@@ -32,8 +32,8 @@ namespace Systems
             {
                 currentMana += manaRegenRate * Time.deltaTime;
                 if (currentMana >= maxMana) currentMana = maxMana;
-                manaText.text = "Mana: " + Math.Round(currentMana, 1) + "/" + maxMana;
             }
+            manaText.text = "Mana: " + Math.Round(currentMana, 1);
         }
 
         public void StartManaTimer()
@@ -51,9 +51,9 @@ namespace Systems
             currentMana += enemy.GetComponent<EnemyBase>().GetManaDrop();
         }
 
-        public void PurchaseWithMana(float mana)
+        public void PurchaseWithMana(double mana)
         {
-            currentMana -= mana;
+            currentMana -= (float) mana;
         }
 
         public double GetCurrentMana()

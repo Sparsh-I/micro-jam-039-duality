@@ -5,6 +5,7 @@ using Systems;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Managers
 {
@@ -27,16 +28,16 @@ namespace Managers
         void Start()
         {
             health = maxHealth;
-            healthText.text = "Health: " + GetHealth() + "/" + GetMaxHealth();
-            attackPointsText.text = "AP: 0/" + pointSystem.GetMaxAttackPoints();
-            defencePointsText.text = "DP: 0/" + pointSystem.GetMaxDefencePoints();
+            healthText.text = "Health: " + GetHealth();
+            attackPointsText.text = "AP: 0";;
+            defencePointsText.text = "DP: 0";
         }
 
         void Update()
         {
-            healthText.text = "Health: " + GetHealth() + "/" + GetMaxHealth();
-            attackPointsText.text = "AP: " + pointSystem.GetAttackPoints() + "/" + pointSystem.GetMaxAttackPoints();
-            defencePointsText.text = "DP: " + pointSystem.GetDefencePoints() + "/" + pointSystem.GetMaxDefencePoints();
+            healthText.text = "Health: " + GetHealth();
+            attackPointsText.text = "AP: " + pointSystem.GetAttackPoints();
+            defencePointsText.text = "DP: " + pointSystem.GetDefencePoints();
         }
 
         private void RestoreHealth()
@@ -54,10 +55,10 @@ namespace Managers
             return maxHealth;
         }
 
-        public void IncreaseMaxHealth()
+        public void IncreaseMaxHealth(int increment)
         {
-            health += 10;
-            maxHealth += 10;
+            health += increment;
+            maxHealth += increment;
         }
 
         public void TakeDamage(int damage)
@@ -66,6 +67,7 @@ namespace Managers
             if (health <= 0)
             {
                 health = 0;
+                SceneManager.LoadScene("Game Over");
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace Managers
         private float range;
 
         private float _nextPelletTimer;
-
+        
         [Header("Attack Stats UI")]
         [SerializeField] private TextMeshProUGUI fireRateText;
         [SerializeField] private TextMeshProUGUI pelletForceText;
@@ -32,7 +33,7 @@ namespace Managers
             _spawnPoint = Vector3.zero;
             fireRateText.text = "FR: " + GetFireRate();
             pelletForceText.text = "PF: " + GetPelletForce();
-            pelletForceText.text = "Range: " + GetRange();
+            rangeText.text = "Range: " + GetRange();
         }
 
         // Update is called once per frame
@@ -40,6 +41,7 @@ namespace Managers
         {
             fireRateText.text = "FR: " + GetFireRate();
             pelletForceText.text = "PF: " + GetPelletForce();
+            rangeText.text = "Range: " + GetRange();
             
             GameObject closestEnemy = FindClosestEnemy();
             if (closestEnemy)
@@ -86,9 +88,9 @@ namespace Managers
             return closestEnemy;
         }
         
-        public float GetPelletForce()
+        private double GetPelletForce()
         {
-            return pelletForce;
+            return Math.Round(pelletForce, 1);
         }
 
         public void IncreasePelletForce(float force)
@@ -101,9 +103,9 @@ namespace Managers
             pelletForce -= force;
         }
 
-        public float GetFireRate()
+        private double GetFireRate()
         {
-            return fireRate;
+            return Math.Round(fireRate, 1);
         }
         
         public void IncreaseFireRate(float rate)
@@ -116,9 +118,9 @@ namespace Managers
             fireRate -= rate;
         }
 
-        public float GetRange()
+        private double GetRange()
         {
-            return range;
+            return Math.Round(range, 1);
         }
 
         public void IncreaseRange(float dist)

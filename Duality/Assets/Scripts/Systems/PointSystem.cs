@@ -1,4 +1,5 @@
 ﻿using Managers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,9 +18,6 @@ namespace Systems
 
         [Tooltip("Defence point limit")] [SerializeField]
         private int maxDefencePoints;
-        
-        [Header("Stat Increments")] [Tooltip("How much the stats increase by with each card bought")] [SerializeField]
-        private float statIncrement;
         
         [Header("References")] [Tooltip("Reference to pellet controller to adjust attack stats")] [SerializeField]
         private PelletController pelletController;
@@ -40,13 +38,25 @@ namespace Systems
             return maxAttackPoints;
         }
 
-        public void AddAttackPoint()
+        public void AddAttackPoint(AttackUpgradeType type, float increment, GameObject card)
         {
-            double diff = manaSystem.GetCurrentMana();
-            if (attackPoints < maxAttackPoints)
+            string costText = card.GetComponentsInChildren<TextMeshProUGUI>()[1].text.Split(" ")[0];
+            double cost = double.Parse(costText);
+            double diff = manaSystem.GetCurrentMana() - cost;
+            if (attackPoints < maxAttackPoints && diff > 0)
             {
                 attackPoints++;
-                pelletController.IncreaseFireRate(statIncrement);
+                switch (type)
+                {
+                    case AttackUpgradeType.FireRate:
+                        pelletController.IncreaseFireRate(increment);
+                        break;
+                    case AttackUpgradeType.PelletForce:
+                        pelletController.IncreasePelletForce(increment);
+                        break;
+                }
+                manaSystem.PurchaseWithMana(cost);
+                card.SetActive(false);
             }
         }
 
@@ -55,7 +65,7 @@ namespace Systems
             if (attackPoints > 0 && defencePoints < maxDefencePoints)
             {
                 attackPoints--;
-                AddDefencePoint();
+                //AddDefencePoint();
             }
             else
             {
@@ -75,12 +85,25 @@ namespace Systems
             return maxDefencePoints;
         }
 
-        public void AddDefencePoint()
+        public void AddDefencePoint(DefenceUpgradeType type, float increment, GameObject card)
         {
-            if (defencePoints < maxDefencePoints)
+            string costText = card.GetComponentsInChildren<TextMeshProUGUI>()[1].text.Split(" ")[0];
+            double cost = double.Parse(costText);
+            double diff = manaSystem.GetCurrentMana() - cost;
+            if (defencePoints < maxDefencePoints && diff > 0)
             {
                 defencePoints++;
-                playerController.IncreaseMaxHealth();
+                switch (type)
+                {
+                    case DefenceUpgradeType.MaxHealth:
+                        playerController.IncreaseMaxHealth((int) increment);
+                        break;
+                    case DefenceUpgradeType.RangeSize:
+                        pelletController.IncreaseRange(increment);
+                        break;
+                }
+                manaSystem.PurchaseWithMana(cost);
+                card.SetActive(false);
             }
         }
 
@@ -89,7 +112,7 @@ namespace Systems
             if (defencePoints > 0 && attackPoints < maxAttackPoints)
             {
                 defencePoints--;
-                AddAttackPoint();
+                //AddAttackPoint();
             }
             else
             {

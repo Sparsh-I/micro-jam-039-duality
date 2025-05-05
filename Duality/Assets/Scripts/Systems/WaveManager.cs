@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -26,22 +27,26 @@ namespace Systems
         [Header("References")] [Tooltip("Enemy spawner object")] [SerializeField]
         private EnemyController enemySpawner;
 
-        [Tooltip("Shop menu and manager")] [SerializeField]
+        [Tooltip("Shop menu and manager to start/stop between waves")] [SerializeField]
         private ShopManager shopManager;
 
-        [SerializeField] private TextMeshProUGUI waveText;
+        [SerializeField] private TextMeshProUGUI waveCounterText;
+        [SerializeField] private TextMeshProUGUI waveTimerText;
 
 
         // Start is called before the first frame update
         void Start()
         {
             StartCoroutine(WaveLoop());
-            waveText.text = "Wave 1";
+            waveCounterText.text = "Wave 1";
+            waveTimerText.text = GetWaveTimer();
         }
 
         // Update is called once per frame
         void Update()
         {
+            waveTimerText.text = GetWaveTimer();
+            
             if (isWaveActive)
             {
                 waveTimer -= Time.deltaTime;
@@ -51,6 +56,11 @@ namespace Systems
             }
         }
 
+        private string GetWaveTimer()
+        {
+            return Math.Round(waveTimer, 0).ToString("F0");;
+        }
+        
         IEnumerator WaveLoop()
         {
             while (true)
@@ -82,7 +92,7 @@ namespace Systems
             shopManager.CloseShop();
             isPlayerReadyForNextWave = true;
             currentWave++;
-            waveText.text = "Wave " + currentWave;
+            waveCounterText.text = "Wave " + currentWave;
         }
 
         private void DestroyAllRemainingEnemies()
