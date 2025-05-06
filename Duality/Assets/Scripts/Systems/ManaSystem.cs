@@ -2,6 +2,7 @@
 using TMPro;
 using Enemies;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Systems
 {
@@ -14,6 +15,8 @@ namespace Systems
 
         [SerializeField] private TextMeshProUGUI manaText;
 
+        [SerializeField] private Slider slider;
+        
         [Header("Mana Regeneration")] [SerializeField]
         private float manaRegenRate;
 
@@ -22,7 +25,9 @@ namespace Systems
         private void Start()
         {
             currentMana = 0;
-            manaText.text = "Mana: " + currentMana;
+            slider.value = (float) GetCurrentMana();
+            slider.maxValue = (float) GetMaxMana();
+            manaText.text = GetCurrentMana().ToString("F1");
             StartManaTimer();
         }
 
@@ -33,7 +38,9 @@ namespace Systems
                 currentMana += manaRegenRate * Time.deltaTime;
                 if (currentMana >= maxMana) currentMana = maxMana;
             }
-            manaText.text = "Mana: " + Math.Round(currentMana, 1);
+            
+            slider.value = (float) GetCurrentMana();
+            manaText.text = GetCurrentMana().ToString("F1");
         }
 
         public void StartManaTimer()
@@ -59,6 +66,11 @@ namespace Systems
         public double GetCurrentMana()
         {
             return Math.Round(currentMana, 1);
+        }
+        
+        public double GetMaxMana()
+        {
+            return Math.Round(maxMana, 1);
         }
     }
 }

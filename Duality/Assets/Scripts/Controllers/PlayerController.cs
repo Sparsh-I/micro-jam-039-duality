@@ -12,7 +12,9 @@ namespace Managers
         private float health;
 
         [SerializeField] private Slider slider;
-
+        [SerializeField] private Gradient gradient;
+        [SerializeField] private Image fill;
+        
         [Tooltip("Max player health")] [SerializeField]
         private float maxHealth;
 
@@ -28,12 +30,16 @@ namespace Managers
             health = maxHealth;
             attackPointsText.text = "0";;
             defencePointsText.text = "0";
+            
+            fill.color = gradient.Evaluate(1f);
         }
 
         void Update()
         {
             slider.value = GetHealth();
             slider.maxValue = GetMaxHealth();
+            
+            fill.color = gradient.Evaluate(slider.normalizedValue);
             
             attackPointsText.text = pointSystem.GetAttackPoints().ToString();
             defencePointsText.text = pointSystem.GetDefencePoints().ToString();
@@ -58,6 +64,8 @@ namespace Managers
         {
             health += increment;
             maxHealth += increment;
+
+            fill.color = gradient.Evaluate(1f);
         }
 
         public void TakeDamage(int damage)
